@@ -1,3 +1,4 @@
+
 //Library Imports
 let express = require('express');
 let path = require('path');
@@ -36,13 +37,8 @@ app.use(cors({
 //Routes Config
 let index = require('./routes/index');
 
-require('./routes/pages/user.js')(app);
-require('./routes/pages/unites.js')(app);
-require('./routes/pages/nutrients.js')(app);
-require('./routes/pages/extraction.js')(app);
-require('./routes/pages/recommandation.js')(app);
-require('./routes/pages/sfApi.js')(app);
-require('./routes/pages/convertion.js')(app);
+require('./routes/pages/order.js')(app);
+require('./routes/pages/machine.js')(app);
 app.use('/', index);
 
 
