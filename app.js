@@ -9,9 +9,9 @@ let fs = require('fs');
 let mongoose = require('mongoose');
 const cors = require('cors');
 //Variable Configurations
-let dbURL = process.env.COSMOSDB_URL || 'mongodb://127.0.0.1:27017/sportscentrum';
+//let dbURL = process.env.COSMOSDB_URL || 'mongodb://127.0.0.1:27017/sportscentrum';
 //let dbURL = 'mongodb+srv://niku2889:niku2889@cluster0-tg6ei.mongodb.net/test?retryWrites=true';
-//let dbURL = 'mongodb://niku2889:niku2889@ds159661.mlab.com:59661/soildb';
+let dbURL = 'mongodb://niku2889:niku2889lee@ds217452.mlab.com:17452/pianodb';
 const models = path.join(__dirname, 'models');
 
 //Model Bootstrapping
