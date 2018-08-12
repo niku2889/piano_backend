@@ -1,5 +1,6 @@
 const Orders = require('../models/order.model.js');
 
+
 // Create and Save a new order 
 exports.create = (req, res) => {
     //Validate request
@@ -41,14 +42,27 @@ exports.create = (req, res) => {
 
 // Retrieve and return all orders from the database.
 exports.findAll = (req, res) => {
-    Orders.find()
-        .then(uni => {
-            res.send(uni);
-        }).catch(err => {
+    // Orders.find()
+    //     .then(uni => {
+    //         res.send(uni);
+    //     }).catch(err => {
+    //         res.status(500).send({
+    //             message: err.message || "Some error occurred while retrieving order."
+    //         });
+    //     });
+    const sql = require("msnodesqlv8");
+const connectionString = "server=LENOVO-PC\\SQLEXPRESS;Database=PianoDB;Trusted_Connection=Yes;Driver={SQL Server Native Client 11.0}";
+    const query = "select * from Order";
+    sql.query(connectionString, query, (err, rows) => {
+        if (err) {
             res.status(500).send({
                 message: err.message || "Some error occurred while retrieving order."
             });
-        });
+        }
+        console.log(rows)
+        // send records as a response
+        res.send(rows);
+    });
 }
 
 // Find a single order with a Id
