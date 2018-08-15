@@ -1,47 +1,22 @@
 const sql = require('mssql');
 const sqlConfig = {
-    user: 'nicim',
-    password: 'nicim',
-    server: 'PROMETEUS-TEMPL\\SQLEXPRESS',
+    user: 'sa',
+    password: 'admin123',
+    server: 'LENOVO-PC\\SQLEXPRESS',
     database: 'NICIM',
-    port: 1433
+    port: 1433,
+    options: {
+        encrypt: false
+    }
 };
 
-//Function to connect to database and execute query
-var executeQuery = function (res, query) {
-    sql.connect(dbConfig, function (err) {
-        if (err) {
-            console.log("Error while connecting database :- " + err);
-            res.send(err);
-        }
-        else {
-            // create Request object
-            var request = new sql.Request();
-            // query to the database
-            request.query(query, function (err, res) {
-                if (err) {
-                    console.log("Error while querying database :- " + err);
-                    res.send(err);
-                }
-                else {
-                    res.send(res);
-                }
-            });
-        }
-    });
-}
-
 module.exports = (app) => {
-    const machine = require('../../controllers/machine.controller.js');
-
-    // Create a new Records
-    app.post('/api/piano/machines', machine.create);
 
     // Retrieve all Records
     app.get('/api/piano/machines', function (req, res) {
         //sql.connect(sqlConfig, function (err) {
         new sql.ConnectionPool(sqlConfig).connect().then(pool => {
-            return pool.request().query("select * from RISORSE")
+            return pool.request().query("select CODICE_RISORSA,DESCRIZIONE from RISORSE")
         }).then(result => {
             let rows = result.recordset
             res.setHeader('Access-Control-Allow-Origin', '*')
@@ -59,7 +34,7 @@ module.exports = (app) => {
     app.get('/api/piano/machines/:Id', function (req, res) {
         //sql.connect(sqlConfig, function (err) {
         new sql.ConnectionPool(sqlConfig).connect().then(pool => {
-            return pool.request().query("select * from RISORSE where CODICE_RISO = " + req.params.Id)
+            return pool.request().query("select CODICE_RISORSA,DESCRIZIONE from RISORSE where CODICE_RISO = " + req.params.Id)
         }).then(result => {
             let rows = result.recordset
             res.setHeader('Access-Control-Allow-Origin', '*')
@@ -73,9 +48,4 @@ module.exports = (app) => {
         });
     })
 
-    // Update a Records with Id
-    app.put('/api/piano/machines/:Id', machine.update);
-
-    // Delete a Records with Id
-    app.delete('/api/piano/machines/:Id', machine.delete);
 }
