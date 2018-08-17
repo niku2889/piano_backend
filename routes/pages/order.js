@@ -33,7 +33,7 @@ module.exports = (app) => {
     // Retrieve a single Records with Id
     app.get('/api/piano/orders/:Id', function (req, res) {
         new sql.ConnectionPool(sqlConfig).connect().then(pool => {
-            return pool.request().query("select distinct f.codice_risorsa , o.codice_ordine , o.codice_parte, o.priorita_ordine from ordini_fasi f, odl o where f.codice_ordine = o.codice_ordine and o.tipo <= 5 and f.codice_risorsa ='" + req.params.Id +"'")
+            return pool.request().query("select distinct f.codice_risorsa , o.codice_ordine , o.codice_parte, o.priorita_ordine,'true' as edit,'false' as lastLine from ordini_fasi f, odl o where f.codice_ordine = o.codice_ordine and o.tipo <= 5 and f.codice_risorsa ='" + req.params.Id +"' order by priorita_ordine ASC")
         }).then(result => {
             let rows = result.recordset
             res.setHeader('Access-Control-Allow-Origin', '*')
